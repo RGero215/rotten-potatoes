@@ -1,6 +1,9 @@
 const express = require('express')
 const app = express()
+const methodOverride = require('method-override')
+
 const mongoose = require('mongoose')
+
 mongoose.connect('mongodb://localhost/rotten-potatoes');
 
 const Review = mongoose.model('Review', {
@@ -18,7 +21,8 @@ app.set('view engine', 'handlebars');
 
 // The following line must appear AFTER const app = express() and before your routes!
 app.use(bodyParser.urlencoded({ extended: true }));
-
+// override with POST having ?_method=DELETE or ?_method=PUT
+app.use(methodOverride('_method'))
 
 
 
@@ -66,6 +70,24 @@ app.get('/reviews/:id', (req, res) => {
     }).catch((err) => {
         console.log(err.message);
     })
+})
+
+// EDIT
+app.get('/reviews/:id/edit', (req, res) => {
+    Review.findById(req.params.id, function(err, review) {
+      res.render('reviews-edit', {review: review});
+    })
+})
+
+// UPDATE
+app.put('/reviews/:id', (req, res) => {
+    Review.findByIdAndUpdate(req.params.id, req.body)
+      .then(review => {
+        res.redirect(`/reviews/${review._id}`)
+      })
+      .catch(err => {
+        console.log(err.message)
+      })
 })
 
 app.listen(3000, () => {
