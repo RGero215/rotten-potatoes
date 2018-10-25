@@ -6,7 +6,8 @@ mongoose.connect('mongodb://localhost/rotten-potatoes');
 const Review = mongoose.model('Review', {
     title: String,
     description: String,
-    movieTitle: String
+    movieTitle: String,
+    rating: Number
 })
 // INITIALIZE BODY-PARSER AND ADD IT TO APP
 const bodyParser = require('body-parser')
@@ -20,9 +21,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
-app.get('/', (req, res) => {
-  res.render('reviews-index', {reviews: reviews})
-})
+
 
 // OUR MOCK ARRAY OF PROJECTS
 // let reviews = [
@@ -33,7 +32,7 @@ app.get('/', (req, res) => {
 // ]
 
 // INDEX
-app.get('/reviews', (req, res) => {
+app.get('/', (req, res) => {
     Review.find()
         .then(reviews => {
             res.render('reviews-index', {reviews: reviews});
@@ -58,6 +57,15 @@ app.post('/reviews', (req, res) => {
         console.log(err.message);
     })
 
+})
+
+// SHOW
+app.get('/reviews/:id', (req, res) => {
+    Review.findById(req.params.id).then((review) =>{
+        res.render('reviews-show', {review: review})
+    }).catch((err) => {
+        console.log(err.message);
+    })
 })
 
 app.listen(3000, () => {
