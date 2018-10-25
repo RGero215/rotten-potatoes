@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 const methodOverride = require('method-override')
-
+const port = process.env.PORT || 3000;
 
 
 
@@ -21,7 +21,7 @@ app.use(methodOverride('_method'))
 
 
 if(!module.parent) {
-    app.listen(3000, () => {
+    app.listen(port, () => {
         console.log('App listening on port 3000!')
     })
  }
