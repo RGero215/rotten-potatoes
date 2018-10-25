@@ -14,7 +14,9 @@ app.get('/', (req, res) => {
 // OUR MOCK ARRAY OF PROJECTS
 let reviews = [
     {title: 'Great Review', movieTitle: 'Batman II'},
-    {title: 'Awesome Movie', movieTitle: 'Titanic'}
+    {title: 'Awesome Movie', movieTitle: 'Titanic'},
+    {title: 'Great Movie', movieTitle: 'Peaceful Warrior'},
+    {title: 'The Movie is OK', movieTitle: 'Venon'},
 ]
 
 // INDEX
